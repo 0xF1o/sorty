@@ -1,0 +1,144 @@
+* { box-sizing: border-box; margin: 0; padding: 0 }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #14120f;
+  color: #f0e9dc;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+#app { position: fixed; inset: 0 }
+canvas#scene { position: absolute; inset: 0; display: block; width: 100%; height: 100% }
+
+#cards { position: absolute; inset: 0; pointer-events: none; overflow: hidden }
+.card {
+  position: absolute; left: 0; top: 0;
+  padding: 4px 10px; border-radius: 7px;
+  border: 2px solid #fff; background: rgba(18, 16, 13, 0.84);
+  font-size: 13px; font-weight: 800; letter-spacing: 0.09em; white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  display: none;
+}
+
+#hud { position: absolute; inset: 0; pointer-events: none }
+#hud.hidden { display: none }
+
+#hud-left { position: absolute; left: 20px; top: 18px; display: flex; flex-direction: column; gap: 2px }
+#money { font-size: 30px; font-weight: 800; letter-spacing: 0.02em; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7) }
+#left { font-size: 12px; font-weight: 700; color: #d8cbb4; letter-spacing: 0.04em; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85) }
+#streak { font-size: 13px; font-weight: 700; color: #ffd479; min-height: 16px; letter-spacing: 0.04em; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85) }
+
+#clock {
+  position: absolute; left: 50%; top: 16px; transform: translateX(-50%);
+  font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+#bag {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+  display: flex; gap: 6px; align-items: center; justify-content: center; max-width: 80vw; flex-wrap: wrap;
+}
+.chip {
+  border: 2px solid #666; border-radius: 999px; padding: 3px 10px;
+  font-size: 12px; font-weight: 700; background: rgba(0, 0, 0, 0.5); white-space: nowrap;
+}
+.chip.empty { width: 26px; height: 24px; border-color: #3a342c; border-radius: 999px; opacity: 0.35; padding: 0 }
+
+#abilities { position: absolute; left: 20px; bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; max-width: 60vw }
+.ability {
+  font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 7px;
+  background: rgba(0, 0, 0, 0.5); letter-spacing: 0.04em;
+  border-left: 3px solid #7dff9b;
+}
+.ability b { color: #ffd479; margin-right: 4px }
+.ability.cool { border-left-color: #6c6357; opacity: 0.55 }
+
+#crosshair {
+  position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  margin: -4px 0 0 -4px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  transition: background 90ms, width 90ms, height 90ms, margin 90ms;
+}
+#crosshair.ok { background: #7dff9b; width: 10px; height: 10px; margin: -5px 0 0 -5px }
+#crosshair.bad { background: #ff6b5e; width: 10px; height: 10px; margin: -5px 0 0 -5px }
+
+#toast {
+  position: absolute; left: 50%; bottom: 74px; transform: translateX(-50%) translateY(6px);
+  font-size: 15px; font-weight: 800; letter-spacing: 0.03em; color: #ffe6a6;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+  opacity: 0; transition: opacity 140ms, transform 140ms;
+}
+#toast.on { opacity: 1; transform: translateX(-50%) translateY(0) }
+
+#overlay {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  background: rgba(10, 9, 7, 0.7); backdrop-filter: blur(4px); z-index: 5000;
+}
+#overlay.on { display: flex }
+
+.panel {
+  width: 400px; padding: 30px 32px; border-radius: 16px;
+  background: #1d1a16; border: 1px solid #3a342c;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+.panel.wide { width: 560px }
+
+h1 { font-size: 40px; letter-spacing: 0.22em; margin-bottom: 6px; color: #ffd479 }
+h2 { font-size: 22px; letter-spacing: 0.06em; margin-bottom: 16px }
+.tagline { color: #b8ad9c; margin-bottom: 18px; font-size: 14px }
+.sub { color: #8e8474; font-size: 12.5px; line-height: 1.6; margin: 14px 0 18px }
+
+.controls { list-style: none; text-align: left; font-size: 13px; line-height: 2; color: #cfc4b2; margin-bottom: 6px }
+.controls b { color: #ffd479 }
+
+.primary {
+  font: inherit; font-weight: 800; letter-spacing: 0.04em;
+  background: #d9a13d; color: #241a08; border: none; border-radius: 9px;
+  padding: 11px 22px; cursor: pointer;
+}
+.primary:hover { background: #edb552 }
+.primary.big { padding: 14px 32px; font-size: 16px; width: 100%; margin-top: 6px }
+
+.shop-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px }
+.shop-head h2 { margin: 0 }
+.shop-money { font-size: 24px; font-weight: 800; color: #ffd479 }
+.shop-list { text-align: left }
+.shop-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 10px 0; border-bottom: 1px solid #2e2a24;
+}
+.shop-row:last-child { border-bottom: none }
+.shop-name { font-size: 14px; font-weight: 700; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap }
+.shop-name .lvl { font-size: 11px; color: #8e8474; font-weight: 700 }
+.shop-name .hint { width: 100%; font-size: 12px; font-weight: 500; color: #a99e8c; line-height: 1.45 }
+.buy {
+  font: inherit; font-weight: 800; background: #2f2a23; color: #ffd479;
+  border: 1px solid #4a4239; border-radius: 8px; padding: 8px 14px; cursor: pointer; min-width: 66px;
+}
+.buy:hover:not(:disabled) { background: #3a332a }
+.buy:disabled { opacity: 0.35; cursor: default }
+.owned { font-size: 11px; font-weight: 800; color: #6c6357; letter-spacing: 0.08em }
+.shop-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 16px }
+.shop-foot .sub { margin: 0 }
+#shop-timer { color: #ffd479; font-weight: 800 }
+
+.results { display: flex; justify-content: center; gap: 26px; margin: 6px 0 4px }
+.results div { display: flex; flex-direction: column; gap: 2px }
+.results b { font-size: 24px; color: #ffd479 }
+.results span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #8e8474 }
+
+#hoverinfo {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, 24px);
+  display: none; gap: 9px; align-items: baseline; white-space: nowrap;
+  padding: 5px 11px; border-radius: 9px; background: rgba(12, 10, 8, 0.74);
+  border: 1px solid #453d33; font-size: 12.5px; font-weight: 700;
+}
+#hoverinfo.on { display: flex }
+.hname { color: #f4ead6 }
+.tag { font-size: 10.5px; letter-spacing: 0.09em; font-weight: 800 }
+.chip i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: middle }
+.chip.empty { background: transparent; border: 2px dashed #4a4239; opacity: 0.5 }
