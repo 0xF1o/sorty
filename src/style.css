@@ -1,5 +1,13 @@
 * { box-sizing: border-box; margin: 0; padding: 0 }
 
+/* The game creates no frames. Hosts that inject ad/tracking iframes get nothing:
+   no layout, no clicks, no paint. Keep this if you ever change hosts. */
+iframe, object, embed {
+  display: none !important; visibility: hidden !important; opacity: 0 !important;
+  pointer-events: none !important; width: 0 !important; height: 0 !important;
+  position: absolute !important; top: -9999px !important; left: -9999px !important;
+}
+
 html, body {
   height: 100%;
   overflow: hidden;

@@ -51,5 +51,6 @@ Not done: pickup/place tweens, settings/mute, 40 archetypes, extra room layouts,
 - **Pointer lock requests must come from a click handler.** Esc unlocks -> pause overlay; the shift clock only ticks while locked.
 - **Camera matrices are one frame stale** inside the update loop (Raycaster reads `matrixWorld` from the last render). Harmless at 60 fps, but the harnesses must wait real animation frames, not wall-clock timeouts.
 - **Always write source files as UTF-8 explicitly.** A cp1252 round-trip corrupts the bundle with "stream did not contain valid UTF-8". Keep string literals ASCII where possible.
+- **No frames, ever.** The game creates no iframes; the host injects some. `index.html` carries a `frame-src 'none'` CSP, `style.css` nukes `iframe/object/embed`, and `main.ts` removes injected ones with a MutationObserver. Verify with `node tools/framecheck.mjs`.
 - **`window.__game` / `window.__state`** are debug hooks the Playwright harnesses drive (`debugAimProp`, `debugAimSlot`, `debugStand`, `debugEndShift`). Keep them working.
 - **Scaling:** everything is authored at real-world size then multiplied by `PROP_SCALE` in `props/part.ts`. Hand size, contact shadow, and reach checks derive from `propSize()`/`propHeight()`.
