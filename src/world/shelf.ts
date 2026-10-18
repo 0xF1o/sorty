@@ -7,6 +7,10 @@ export type ShelfPlan = { x: number; z: number; yaw: number };
 const W = 1.2;
 const D = 0.46;
 const PANEL = 0.035;
+const BOARD_T = 0.04;
+/** Boards are inset a hair on every side so no two faces are ever coplanar (that z-fights). */
+const BOARD_W = W - 2 * PANEL - 0.004;
+const BOARD_D = D - 0.03;
 const ROWS = [0.36, 0.98, 1.6];
 const COL_X = [-0.28, 0.28];
 
@@ -62,11 +66,14 @@ export function buildShelf(plan: ShelfPlan, filter: Tag, id: number): Shelf {
     group.add(m);
   };
 
-  for (const y of ROWS) add(W, 0.04, D, 0, y - 0.02, 0, wood);
-  add(PANEL, height, D, -(W / 2 - PANEL / 2), height / 2, 0, woodDark);
-  add(PANEL, height, D, W / 2 - PANEL / 2, height / 2, 0, woodDark);
-  add(W, height, 0.02, 0, height / 2, -(D / 2 - 0.01), woodDark);
-  add(W, 0.04, D, 0, height, 0, wood);
+  // side panels stop just under the top board, so their top faces are hidden, not coplanar
+  const panelH = height - BOARD_T;
+  add(PANEL, panelH, D, -(W / 2 - PANEL / 2), panelH / 2, 0, woodDark);
+  add(PANEL, panelH, D, W / 2 - PANEL / 2, panelH / 2, 0, woodDark);
+  add(W - 2 * PANEL - 0.002, panelH, 0.02, 0, panelH / 2, -(D / 2 - 0.01), woodDark);
+
+  for (const y of ROWS) add(BOARD_W, BOARD_T, BOARD_D, 0, y - BOARD_T / 2, 0.008, wood);
+  add(BOARD_W, BOARD_T, BOARD_D, 0, height - BOARD_T / 2, 0.008, wood);
 
   const cos = Math.cos(plan.yaw);
   const sin = Math.sin(plan.yaw);

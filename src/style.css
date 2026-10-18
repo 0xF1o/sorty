@@ -58,11 +58,13 @@ canvas#scene { position: absolute; inset: 0; display: block; width: 100%; height
 #abilities { position: absolute; left: 20px; bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; max-width: 60vw }
 .ability {
   font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 7px;
-  background: rgba(0, 0, 0, 0.5); letter-spacing: 0.04em;
-  border-left: 3px solid #7dff9b;
+  background: rgba(12, 11, 9, 0.84); letter-spacing: 0.04em;
+  border-left: 3px solid #7dff9b; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 .ability b { color: #ffd479; margin-right: 4px }
-.ability.cool { border-left-color: #6c6357; opacity: 0.55 }
+.ability.ready { border-left-color: #7dff9b; background: rgba(28, 58, 38, 0.9); color: #f4f0e6 }
+.ability.cool { border-left-color: #6c6357; opacity: 0.5 }
+.ability.locked { border-left-color: #4a4239; opacity: 0.45 }
 
 #crosshair {
   position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;

@@ -14,7 +14,7 @@ import { pauseHtml, resultsHtml, shopHtml, titleHtml } from '../ui/screens';
 import { buildRoom } from '../world/room';
 import { buildShelf, disposeShelves, fitScale, paintCard, PLANS } from '../world/shelf';
 import type { Aabb, Prop, Shelf, Slot } from '../world/types';
-import { capacity, highlightCfg, magnetCd, magnetRange, newLevels, sprintMul, tidyCd, type AbilityId, type Levels } from './abilities';
+import { ABILITY_INFO, capacity, highlightCfg, magnetCd, magnetRange, newLevels, sprintMul, tidyCd, type AbilityId, type Levels } from './abilities';
 import { SHIFTS } from './shifts';
 import { pickSpecs, scatterPositions } from './spawn';
 
@@ -354,15 +354,20 @@ export class Game {
     return best;
   }
 
+  /** Always lists every keyed ability: unlocked ones show READY / cooldown, the rest are dimmed. */
   private abilityLine(now: number): string[] {
-    const out: string[] = [];
-    const chip = (key: string, name: string, left: number) =>
-      `<span class="ability ${left > 0 ? 'cool' : 'ready'}"><b>${key}</b> ${name}${left > 0 ? ` ${Math.ceil(left)}s` : ''}</span>`;
-    if (this.levels.highlight > 0) out.push(chip('Q', 'Highlight', this.highlightCdEnd - now));
-    if (this.levels.tidy > 0) out.push(chip('F', 'Tidy', this.tidyCdEnd - now));
-    if (this.levels.magnet > 0) out.push(chip('Space', 'Magnet', this.magnetCdEnd - now));
-    if (this.levels.sprint > 0) out.push(chip('Shift', 'Sprint', 0));
-    return out;
+    const chip = (id: AbilityId, key: string, left: number): string => {
+      const name = ABILITY_INFO[id].name;
+      if (this.levels[id] === 0) return `<span class="ability locked"><b>${key}</b> ${name}</span>`;
+      if (left > 0) return `<span class="ability cool"><b>${key}</b> ${name} ${Math.ceil(left)}s</span>`;
+      return `<span class="ability ready"><b>${key}</b> ${name}</span>`;
+    };
+    return [
+      chip('highlight', 'Q', this.highlightCdEnd - now),
+      chip('tidy', 'F', this.tidyCdEnd - now),
+      chip('magnet', 'Space', this.magnetCdEnd - now),
+      chip('sprint', 'Shift', 0),
+    ];
   }
 
   private mult(): number {
