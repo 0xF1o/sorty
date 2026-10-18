@@ -9,10 +9,19 @@ First-person sorting game in the browser. Junk lies on the floor; read the shelf
 npm install
 npm run dev -- --port 7317    # dev server (port 7317)
 npm run check                 # typecheck: TypeScript 7 native Go compiler via tsc
-npm run build                 # dist/, relative paths, itch.io ready (~148 KB gz)
+npm run build                 # dist/, relative paths, itch.io ready (~149 KB gz)
 ```
 
 Dev URL params: `?shift=20&shop=5` shorten the clocks for fast iteration.
+
+## Rules (v0.2, after tester feedback)
+
+- **One category per item, one shelf per category.** Categories: `food, toys, tools, soft, kitchen, metal, paper`. A placement is legal only if the item's category equals the shelf card's.
+- **Seven shelf positions**, all on the walls, three rows each (0.36 / 0.98 / 1.60 m). Every row is reachable — no tall cabinets, no ability needed. Six slots per shelf (2 columns × 3 rows).
+- Three shifts: 5 / 6 / 7 categories, 20 / 28 / 36 items, 2:30 each, 45 s shop between them.
+- The room is **wiped when a shift ends**, so the shop shows an empty floor and every shift starts clean.
+- Items can be picked back **off a shelf** at any time; the slot frees up. Money is paid **once per item per shift** (`Prop.paid`), so shelf → hand → shelf cannot farm cash.
+- Abilities: Backpack 1/2/4/6, Highlight, Tidy, Sprint, **Magnet** (replaced Jump — pulls a far item in, Space). $8 / $18 / $35.
 
 ## Stack rules
 
@@ -20,37 +29,26 @@ three.js + TypeScript + Vite. All UI is DOM/CSS (HUD, shop, screens, shelf cards
 No physics engine, no textures, no UVs, no imported models: props are generated at load from a small primitive grammar with vertex colours and one shared material. Keep files small and split by concern.
 
 ```
-src/props/    primitive grammar + 26 item archetypes (id, tags, parts)
-src/world/    room shell/lights, shelf units, slots, DOM cards
+src/props/    primitive grammar + 44 item archetypes (id, name, cat, parts)
+src/world/    room shell/lights, shelf units, slots, CELL + fitScale, DOM cards
 src/player/   controller, dual raycast interaction, ghost preview
 src/ui/       HUD, overlay, screen templates
 src/game/     game.ts orchestrates phases; abilities, shifts, spawn are data/pure
 src/audio/    procedural WebAudio one-shots
-tools/        Playwright harnesses: shot.mjs, playtest.mjs, flow.mjs
+tools/        Playwright harnesses: shot, playtest, flow, shelfpickup, run, framecheck
 ```
 
-## Current state (v0.1)
+## Not done yet
 
-Playable end to end: 3 shifts (18/24/30 items) -> 2 shops -> results, best-run score in `localStorage`.
-8 hand-placed shelves (2 tall, need Jump), 6 slots each, 2 columns × 3 rows. 5 abilities × 3 tiers at $8/$18/$35.
-Tags: metal, red, toys, food, small, tools, soft. A placement is legal if item tags intersect the shelf card.
-
-Not done: pickup/place tweens, settings/mute, 40 archetypes, extra room layouts, touch/mobile, itch.io page, item look-alike audit.
-
-## Next steps, in order
-
-1. Playtest feedback -> tune reach (1.95 m), starting bag size (1), shift length (2:30), prices.
-2. Carry/place tween + small FOV kick + card pulse.
-3. Settings: sensitivity, volume, invert Y, mute.
-4. More prop archetypes and a look-alike audit within each tag.
-5. itch.io page.
+Pickup/place tweens; settings (sensitivity, volume, invert Y, mute); more room layouts; look-alike audit within a category; touch/mobile; itch.io page.
 
 ## Gotchas
 
-- **Two raycasts, on purpose.** `player/interact.ts` casts props and shelf slots separately. Never merge them: floor junk must not block placing onto the shelf behind it.
-- **Pointer lock requests must come from a click handler.** Esc unlocks -> pause overlay; the shift clock only ticks while locked.
+- **Two raycasts in `player/interact.ts`, and this is load-bearing.** Props and shelf slots are cast separately. A single combined cast breaks in both directions: the invisible slot pick sits in front of a placed item (so you could never pick items off shelves — this was a real bug), and floor junk blocks placement onto the shelf behind it.
+- **Pointer lock requests must come from a click handler.** Esc unlocks → pause overlay; the shift clock only ticks while locked.
 - **Camera matrices are one frame stale** inside the update loop (Raycaster reads `matrixWorld` from the last render). Harmless at 60 fps, but the harnesses must wait real animation frames, not wall-clock timeouts.
-- **Always write source files as UTF-8 explicitly.** A cp1252 round-trip corrupts the bundle with "stream did not contain valid UTF-8". Keep string literals ASCII where possible.
-- **No frames, ever.** The game creates no iframes; the host injects some. `index.html` carries a `frame-src 'none'` CSP, `style.css` nukes `iframe/object/embed`, and `main.ts` removes injected ones with a MutationObserver. Verify with `node tools/framecheck.mjs`.
-- **`window.__game` / `window.__state`** are debug hooks the Playwright harnesses drive (`debugAimProp`, `debugAimSlot`, `debugStand`, `debugEndShift`). Keep them working.
-- **Scaling:** everything is authored at real-world size then multiplied by `PROP_SCALE` in `props/part.ts`. Hand size, contact shadow, and reach checks derive from `propSize()`/`propHeight()`.
+- **Always write source files as UTF-8 with `\n`.** A cp1252 round-trip once silently doubled every newline and corrupted the bundle; python `read_text()`/`write_text()` without `encoding=` on Windows is the trap.
+- **Placed props must stay in `worldProps`** (they are pushed back in `placeOnSlot`). Anything removed from that array can no longer be raycast, hovered or picked up.
+- **`window.__game` / `window.__state`** are debug hooks the harnesses drive (`debugAimProp`, `debugAimPlaced`, `debugAimSlot`, `debugStand`, `debugEndShift`). Keep them working.
+- **Scaling:** props are authored at real-world size then multiplied by `PROP_SCALE` in `props/part.ts`. Hand size, contact shadow and slot fitting derive from `propSize()`/`propHeight()` and `CELL` in `world/shelf.ts`.
+- **No frames, ever.** The game creates no iframes; Netlify injects some. `index.html` carries a `frame-src 'none'` CSP, `style.css` nukes `iframe/object/embed`, and `main.ts` removes injected ones with a MutationObserver. Verify with `node tools/framecheck.mjs`.

@@ -1,78 +1,110 @@
 import { C } from '../palette';
 import { P, type PropSpec } from './part';
 
-/** 26 hand-authored archetypes. Every prop's origin is its base centre, so it stands on y=0. */
+/**
+ * Every item belongs to exactly one category, and every category has exactly one shelf.
+ * Origins are at the base centre, so props stand on y=0.
+ */
 export const CATALOG: PropSpec[] = [
-  { id: 'mug', name: 'Mug', tags: ['food'], parts: [
-    P.cyl([0.052, 0.046, 0.10, 14], [0, 0.05, 0], C.cream),
-    P.torus([0.032, 0.011], [0.058, 0.058, 0], C.cream),
+  // ---------------------------------------------------------------- food
+  { id: 'apple', name: 'Apple', cat: 'food', parts: [
+    P.sph(0.062, [0, 0.062, 0], C.red, 10),
+    P.cyl([0.008, 0.008, 0.05, 5], [0, 0.13, 0], C.brown),
+    P.box([0.04, 0.008, 0.025], [0.022, 0.135, 0], C.green, [0, 20, 15]),
   ]},
-  { id: 'plate', name: 'Plate', tags: ['food', 'small'], parts: [
-    P.cyl([0.095, 0.085, 0.018, 18], [0, 0.009, 0], C.white),
-    P.cyl([0.062, 0.062, 0.022, 14], [0, 0.011, 0], C.cream),
-  ]},
-  { id: 'banana', name: 'Banana', tags: ['food'], parts: [
+  { id: 'banana', name: 'Banana', cat: 'food', parts: [
     P.sph(0.035, [-0.045, 0.032, 0], C.yellow),
     P.sph(0.038, [0, 0.042, 0], C.yellow),
     P.sph(0.034, [0.045, 0.032, 0], C.yellow),
     P.sph(0.012, [-0.082, 0.038, 0], C.brown, 6),
   ]},
-  { id: 'can', name: 'Tin can', tags: ['metal', 'food'], parts: [
-    P.cyl([0.036, 0.036, 0.11, 12], [0, 0.055, 0], C.metal),
-    P.cyl([0.037, 0.037, 0.03, 12], [0, 0.055, 0], C.red),
-    P.cyl([0.038, 0.038, 0.008, 12], [0, 0.112, 0], C.grey),
-  ]},
-  { id: 'bottle', name: 'Bottle', tags: ['food', 'small'], parts: [
-    P.cyl([0.032, 0.042, 0.14, 10], [0, 0.07, 0], C.green),
-    P.cyl([0.016, 0.03, 0.04, 8], [0, 0.16, 0], C.green),
-    P.cyl([0.018, 0.018, 0.022, 8], [0, 0.19, 0], C.brown),
-  ]},
-  { id: 'cheese', name: 'Cheese', tags: ['food'], parts: [
+  { id: 'cheese', name: 'Cheese', cat: 'food', parts: [
     P.box([0.11, 0.055, 0.085], [0, 0.028, 0], C.yellow, [0, 22, 0]),
     P.sph(0.014, [0.02, 0.052, 0.01], C.orange, 6),
     P.sph(0.01, [-0.03, 0.048, -0.02], C.orange, 6),
   ]},
-  { id: 'hammer', name: 'Hammer', tags: ['tools', 'metal'], parts: [
+  { id: 'bread', name: 'Bread', cat: 'food', parts: [
+    P.box([0.17, 0.085, 0.09], [0, 0.043, 0], C.brown),
+    P.box([0.172, 0.028, 0.088], [0, 0.098, 0], C.cream),
+    P.sph(0.018, [-0.045, 0.112, 0], C.cream, 6),
+    P.sph(0.018, [0.005, 0.114, 0], C.cream, 6),
+    P.sph(0.018, [0.055, 0.112, 0], C.cream, 6),
+  ]},
+  { id: 'carrot', name: 'Carrot', cat: 'food', parts: [
+    P.cone(0.035, 0.2, [0, 0.035, 0], C.orange, 10, [0, 0, -90]),
+    P.cone(0.022, 0.07, [-0.11, 0.06, 0], C.green, 6, [0, 0, 100]),
+    P.cone(0.018, 0.06, [-0.1, 0.02, 0.03], C.green, 6, [0, 0, 70]),
+  ]},
+
+  // ---------------------------------------------------------------- kitchen
+  { id: 'mug', name: 'Mug', cat: 'kitchen', parts: [
+    P.cyl([0.052, 0.046, 0.1, 14], [0, 0.05, 0], C.cream),
+    P.torus([0.032, 0.011], [0.058, 0.058, 0], C.cream),
+  ]},
+  { id: 'plate', name: 'Plate', cat: 'kitchen', parts: [
+    P.cyl([0.095, 0.085, 0.018, 18], [0, 0.009, 0], C.white),
+    P.cyl([0.062, 0.062, 0.022, 14], [0, 0.011, 0], C.cream),
+  ]},
+  { id: 'bottle', name: 'Bottle', cat: 'kitchen', parts: [
+    P.cyl([0.032, 0.042, 0.14, 10], [0, 0.07, 0], C.green),
+    P.cyl([0.016, 0.03, 0.04, 8], [0, 0.16, 0], C.green),
+    P.cyl([0.018, 0.018, 0.022, 8], [0, 0.19, 0], C.brown),
+  ]},
+  { id: 'can', name: 'Tin can', cat: 'kitchen', parts: [
+    P.cyl([0.036, 0.036, 0.11, 12], [0, 0.055, 0], C.metal),
+    P.cyl([0.037, 0.037, 0.03, 12], [0, 0.055, 0], C.red),
+    P.cyl([0.038, 0.038, 0.008, 12], [0, 0.112, 0], C.grey),
+  ]},
+  { id: 'jar', name: 'Jar', cat: 'kitchen', parts: [
+    P.cyl([0.05, 0.05, 0.11, 12], [0, 0.055, 0], C.teal),
+    P.cyl([0.054, 0.054, 0.02, 12], [0, 0.12, 0], C.gold),
+    P.box([0.028, 0.04, 0.006], [0, 0.06, 0.05], C.cream),
+  ]},
+  { id: 'teapot', name: 'Teapot', cat: 'kitchen', parts: [
+    P.sph(0.07, [0, 0.07, 0], C.white, 12),
+    P.cone(0.022, 0.08, [0.078, 0.09, 0], C.white, 8, [0, 0, -55]),
+    P.torus([0.038, 0.011], [-0.072, 0.085, 0], C.white),
+    P.cyl([0.03, 0.03, 0.015, 10], [0, 0.138, 0], C.teal),
+  ]},
+
+  // ---------------------------------------------------------------- tools
+  { id: 'hammer', name: 'Hammer', cat: 'tools', parts: [
     P.box([0.028, 0.26, 0.028], [0, 0.13, 0], C.wood),
     P.box([0.15, 0.05, 0.048], [0, 0.255, 0], C.grey),
     P.box([0.03, 0.05, 0.048], [-0.078, 0.255, 0], C.metal),
   ]},
-  { id: 'wrench', name: 'Wrench', tags: ['tools', 'metal'], parts: [
+  { id: 'wrench', name: 'Wrench', cat: 'tools', parts: [
     P.box([0.035, 0.28, 0.022], [0, 0.14, 0], C.metal),
     P.box([0.09, 0.075, 0.026], [0, 0.29, 0], C.metal),
     P.box([0.024, 0.05, 0.028], [0, 0.325, 0], C.dark),
   ]},
-  { id: 'screwdriver', name: 'Screwdriver', tags: ['tools', 'small'], parts: [
+  { id: 'screwdriver', name: 'Screwdriver', cat: 'tools', parts: [
     P.cyl([0.021, 0.026, 0.09, 8], [0, 0.045, 0], C.red),
     P.cyl([0.007, 0.007, 0.13, 6], [0, 0.15, 0], C.metal),
   ]},
-  { id: 'toolbox', name: 'Toolbox', tags: ['tools', 'metal'], parts: [
+  { id: 'scissors', name: 'Scissors', cat: 'tools', parts: [
+    P.box([0.018, 0.17, 0.008], [0.012, 0.09, 0], C.metal, [0, 0, 8]),
+    P.box([0.018, 0.17, 0.008], [-0.012, 0.09, 0], C.metal, [0, 0, -8]),
+    P.torus([0.024, 0.008], [0.032, 0.022, 0], C.dark),
+    P.torus([0.024, 0.008], [-0.032, 0.022, 0], C.dark),
+  ]},
+  { id: 'toolbox', name: 'Toolbox', cat: 'tools', parts: [
     P.box([0.3, 0.14, 0.17], [0, 0.07, 0], C.red),
     P.box([0.31, 0.03, 0.18], [0, 0.15, 0], C.dark),
     P.torus([0.045, 0.012], [0, 0.19, 0], C.grey),
   ]},
-  { id: 'bolt', name: 'Bolt', tags: ['metal', 'small'], parts: [
-    P.cyl([0.022, 0.022, 0.055, 6], [0, 0.025, 0], C.metal, [90, 0, 0]),
-    P.cyl([0.038, 0.038, 0.022, 6], [0.035, 0.025, 0], C.grey, [90, 0, 0]),
-  ]},
-  { id: 'gear', name: 'Gear', tags: ['metal'], parts: [
-    P.cyl([0.07, 0.07, 0.028, 9], [0, 0.014, 0], C.metal),
-    P.cyl([0.022, 0.022, 0.036, 8], [0, 0.014, 0], C.dark),
-    P.box([0.03, 0.03, 0.026], [0.075, 0.014, 0], C.metal),
-    P.box([0.03, 0.03, 0.026], [-0.075, 0.014, 0], C.metal),
-    P.box([0.026, 0.03, 0.03], [0, 0.014, 0.075], C.metal),
-    P.box([0.026, 0.03, 0.03], [0, 0.014, -0.075], C.metal),
-  ]},
-  { id: 'pipe', name: 'Pipe', tags: ['metal', 'tools'], parts: [
+  { id: 'pipe', name: 'Pipe', cat: 'tools', parts: [
     P.cyl([0.021, 0.021, 0.3, 8], [0, 0.022, 0], C.metal, [0, 0, 90]),
     P.cyl([0.021, 0.021, 0.09, 8], [0.15, 0.055, 0], C.metal),
     P.cyl([0.026, 0.026, 0.03, 8], [-0.15, 0.022, 0], C.grey, [0, 0, 90]),
   ]},
-  { id: 'ball', name: 'Ball', tags: ['toys', 'red'], parts: [
+
+  // ---------------------------------------------------------------- toys
+  { id: 'ball', name: 'Ball', cat: 'toys', parts: [
     P.sph(0.072, [0, 0.072, 0], C.red, 12),
     P.torus([0.072, 0.008], [0, 0.072, 0], C.cream),
   ]},
-  { id: 'teddy', name: 'Teddy', tags: ['toys', 'soft'], parts: [
+  { id: 'teddy', name: 'Teddy', cat: 'toys', parts: [
     P.sph(0.072, [0, 0.075, 0], C.brown, 10),
     P.sph(0.058, [0, 0.165, 0], C.brown, 10),
     P.sph(0.023, [-0.045, 0.205, 0], C.brown, 7),
@@ -81,11 +113,11 @@ export const CATALOG: PropSpec[] = [
     P.sph(0.032, [-0.075, 0.09, 0], C.brown, 8),
     P.sph(0.032, [0.075, 0.09, 0], C.brown, 8),
   ]},
-  { id: 'block', name: 'Block', tags: ['toys', 'small'], parts: [
+  { id: 'block', name: 'Block', cat: 'toys', parts: [
     P.box([0.095, 0.095, 0.095], [0, 0.048, 0], C.blue),
     P.box([0.05, 0.05, 0.1], [0, 0.048, 0], C.cream),
   ]},
-  { id: 'car', name: 'Toy car', tags: ['toys', 'red', 'small'], parts: [
+  { id: 'car', name: 'Toy car', cat: 'toys', parts: [
     P.box([0.17, 0.06, 0.095], [0, 0.062, 0], C.red),
     P.box([0.085, 0.055, 0.088], [0, 0.115, 0], C.blue),
     P.cyl([0.03, 0.03, 0.022, 8], [0.05, 0.03, 0.05], C.dark, [90, 0, 0]),
@@ -93,48 +125,161 @@ export const CATALOG: PropSpec[] = [
     P.cyl([0.03, 0.03, 0.022, 8], [0.05, 0.03, -0.05], C.dark, [90, 0, 0]),
     P.cyl([0.03, 0.03, 0.022, 8], [-0.05, 0.03, -0.05], C.dark, [90, 0, 0]),
   ]},
-  { id: 'dice', name: 'Dice', tags: ['toys', 'small'], parts: [
+  { id: 'dice', name: 'Dice', cat: 'toys', parts: [
     P.box([0.07, 0.07, 0.07], [0, 0.035, 0], C.white),
     P.sph(0.009, [0.015, 0.072, 0.015], C.dark, 5),
     P.sph(0.009, [-0.015, 0.072, -0.015], C.dark, 5),
   ]},
-  { id: 'rocket', name: 'Rocket', tags: ['toys', 'red'], parts: [
+  { id: 'rocket', name: 'Rocket', cat: 'toys', parts: [
     P.cyl([0.028, 0.042, 0.17, 10], [0, 0.085, 0], C.red),
     P.cone(0.028, 0.06, [0, 0.2, 0], C.cream),
     P.box([0.075, 0.045, 0.012], [0, 0.035, 0], C.cream),
     P.box([0.012, 0.045, 0.075], [0, 0.035, 0], C.cream),
   ]},
-  { id: 'pillow', name: 'Pillow', tags: ['soft'], parts: [
+  { id: 'dino', name: 'Dino', cat: 'toys', parts: [
+    P.sph(0.075, [0, 0.09, 0], C.green, 10),
+    P.sph(0.052, [0, 0.17, 0.075], C.green, 9),
+    P.box([0.06, 0.035, 0.05], [0, 0.155, 0.125], C.green, [10, 0, 0]),
+    P.sph(0.028, [-0.095, 0.08, -0.035], C.green, 7),
+    P.sph(0.018, [-0.14, 0.065, -0.06], C.green, 6),
+    P.box([0.03, 0.055, 0.032], [-0.045, 0.026, 0.015], C.green),
+    P.box([0.03, 0.055, 0.032], [0.045, 0.026, 0.015], C.green),
+    P.cone(0.016, 0.045, [0, 0.175, -0.01], C.yellow, 5),
+    P.cone(0.014, 0.038, [0, 0.16, -0.06], C.yellow, 5),
+    P.cone(0.012, 0.032, [0, 0.125, -0.1], C.yellow, 5),
+    P.sph(0.011, [0.028, 0.19, 0.115], C.dark, 5),
+    P.sph(0.011, [-0.028, 0.19, 0.115], C.dark, 5),
+  ]},
+  { id: 'cat', name: 'Cat', cat: 'toys', parts: [
+    P.sph(0.07, [0, 0.068, 0], C.orange, 10),
+    P.sph(0.048, [0, 0.145, 0.045], C.orange, 9),
+    P.cone(0.02, 0.04, [-0.028, 0.19, 0.045], C.orange, 6),
+    P.cone(0.02, 0.04, [0.028, 0.19, 0.045], C.orange, 6),
+    P.sph(0.022, [0, 0.135, 0.088], C.cream, 7),
+    P.sph(0.016, [-0.085, 0.085, -0.055], C.orange, 6),
+    P.sph(0.016, [-0.11, 0.11, -0.075], C.orange, 6),
+    P.sph(0.024, [-0.045, 0.024, 0.045], C.cream, 6),
+    P.sph(0.024, [0.045, 0.024, 0.045], C.cream, 6),
+    P.sph(0.009, [-0.022, 0.155, 0.088], C.dark, 5),
+    P.sph(0.009, [0.022, 0.155, 0.088], C.dark, 5),
+  ]},
+  { id: 'duck', name: 'Duck', cat: 'toys', parts: [
+    P.sph(0.062, [0, 0.062, 0], C.yellow, 10),
+    P.sph(0.042, [0, 0.14, 0.038], C.yellow, 9),
+    P.cone(0.02, 0.05, [0, 0.135, 0.09], C.orange, 7, [90, 0, 0]),
+    P.box([0.02, 0.05, 0.055], [-0.058, 0.07, 0], C.cream),
+    P.box([0.02, 0.05, 0.055], [0.058, 0.07, 0], C.cream),
+    P.sph(0.009, [0.022, 0.155, 0.065], C.dark, 5),
+    P.sph(0.009, [-0.022, 0.155, 0.065], C.dark, 5),
+  ]},
+  { id: 'robot', name: 'Robot', cat: 'toys', parts: [
+    P.box([0.12, 0.11, 0.08], [0, 0.115, 0], C.metal),
+    P.box([0.09, 0.07, 0.07], [0, 0.205, 0], C.blue),
+    P.box([0.022, 0.022, 0.012], [-0.022, 0.21, 0.038], C.dark),
+    P.box([0.022, 0.022, 0.012], [0.022, 0.21, 0.038], C.dark),
+    P.box([0.026, 0.09, 0.026], [-0.075, 0.125, 0], C.metal),
+    P.box([0.026, 0.09, 0.026], [0.075, 0.125, 0], C.metal),
+    P.box([0.038, 0.06, 0.045], [-0.032, 0.03, 0], C.metal),
+    P.box([0.038, 0.06, 0.045], [0.032, 0.03, 0], C.metal),
+    P.box([0.05, 0.02, 0.02], [0, 0.25, 0], C.red),
+  ]},
+  { id: 'plane', name: 'Toy plane', cat: 'toys', parts: [
+    P.cyl([0.032, 0.048, 0.24, 10], [0, 0.085, 0], C.red, [0, 0, 90]),
+    P.box([0.06, 0.014, 0.22], [0, 0.085, 0], C.cream),
+    P.box([0.018, 0.06, 0.07], [-0.11, 0.115, 0], C.cream),
+    P.cone(0.032, 0.05, [0.14, 0.085, 0], C.red, 8, [0, 0, -90]),
+    P.sph(0.022, [0.04, 0.1, 0.05], C.blue, 6),
+  ]},
+  { id: 'train', name: 'Toy train', cat: 'toys', parts: [
+    P.box([0.16, 0.07, 0.08], [0, 0.08, 0], C.blue),
+    P.box([0.06, 0.06, 0.08], [-0.05, 0.145, 0], C.red),
+    P.cyl([0.016, 0.02, 0.055, 8], [0.05, 0.15, 0], C.dark),
+    P.cyl([0.03, 0.03, 0.02, 10], [0.09, 0.06, 0], C.grey, [0, 0, 90]),
+    P.cyl([0.024, 0.024, 0.02, 8], [0.05, 0.026, 0.045], C.dark, [90, 0, 0]),
+    P.cyl([0.024, 0.024, 0.02, 8], [-0.05, 0.026, 0.045], C.dark, [90, 0, 0]),
+    P.cyl([0.024, 0.024, 0.02, 8], [0.05, 0.026, -0.045], C.dark, [90, 0, 0]),
+    P.cyl([0.024, 0.024, 0.02, 8], [-0.05, 0.026, -0.045], C.dark, [90, 0, 0]),
+  ]},
+  { id: 'yoyo', name: 'Yo-yo', cat: 'toys', parts: [
+    P.cyl([0.05, 0.05, 0.028, 12], [0, 0.014, 0], C.red),
+    P.cyl([0.05, 0.05, 0.028, 12], [0, 0.048, 0], C.red),
+    P.cyl([0.052, 0.052, 0.012, 12], [0, 0.031, 0], C.cream),
+  ]},
+
+  // ---------------------------------------------------------------- soft
+  { id: 'pillow', name: 'Pillow', cat: 'soft', parts: [
     P.box([0.28, 0.09, 0.21], [0, 0.046, 0], C.cream),
     P.box([0.29, 0.075, 0.1], [0, 0.046, 0], C.white),
   ]},
-  { id: 'towel', name: 'Towel', tags: ['soft', 'red'], parts: [
+  { id: 'towel', name: 'Towel', cat: 'soft', parts: [
     P.box([0.25, 0.055, 0.17], [0, 0.028, 0], C.red),
     P.box([0.252, 0.058, 0.04], [0, 0.028, 0.03], C.cream),
     P.box([0.252, 0.058, 0.025], [0, 0.028, -0.05], C.cream),
   ]},
-  { id: 'sock', name: 'Sock', tags: ['soft', 'small'], parts: [
+  { id: 'sock', name: 'Sock', cat: 'soft', parts: [
     P.box([0.07, 0.13, 0.065], [0, 0.065, 0], C.teal),
     P.box([0.07, 0.045, 0.13], [0, 0.023, 0.045], C.teal),
     P.box([0.072, 0.03, 0.067], [0, 0.115, 0], C.cream),
   ]},
-  { id: 'scissors', name: 'Scissors', tags: ['tools', 'metal', 'small'], parts: [
-    P.box([0.018, 0.17, 0.008], [0.012, 0.09, 0], C.metal, [0, 0, 8]),
-    P.box([0.018, 0.17, 0.008], [-0.012, 0.09, 0], C.metal, [0, 0, -8]),
-    P.torus([0.024, 0.008], [0.032, 0.022, 0], C.dark),
-    P.torus([0.024, 0.008], [-0.032, 0.022, 0], C.dark),
+  { id: 'blanket', name: 'Blanket', cat: 'soft', parts: [
+    P.box([0.26, 0.065, 0.2], [0, 0.033, 0], C.pink),
+    P.box([0.262, 0.035, 0.06], [0, 0.07, -0.06], C.cream),
   ]},
-  { id: 'book', name: 'Book', tags: ['small'], parts: [
+  { id: 'sweater', name: 'Sweater', cat: 'soft', parts: [
+    P.box([0.2, 0.14, 0.085], [0, 0.07, 0], C.teal),
+    P.box([0.055, 0.1, 0.06], [-0.12, 0.095, 0], C.teal),
+    P.box([0.055, 0.1, 0.06], [0.12, 0.095, 0], C.teal),
+    P.box([0.075, 0.028, 0.075], [0, 0.15, 0], C.cream),
+  ]},
+
+  // ---------------------------------------------------------------- metal
+  { id: 'bolt', name: 'Bolt', cat: 'metal', parts: [
+    P.cyl([0.022, 0.022, 0.055, 6], [0, 0.025, 0], C.metal, [90, 0, 0]),
+    P.cyl([0.038, 0.038, 0.022, 6], [0.035, 0.025, 0], C.grey, [90, 0, 0]),
+  ]},
+  { id: 'gear', name: 'Gear', cat: 'metal', parts: [
+    P.cyl([0.07, 0.07, 0.028, 9], [0, 0.014, 0], C.metal),
+    P.cyl([0.022, 0.022, 0.036, 8], [0, 0.014, 0], C.dark),
+    P.box([0.03, 0.03, 0.026], [0.075, 0.014, 0], C.metal),
+    P.box([0.03, 0.03, 0.026], [-0.075, 0.014, 0], C.metal),
+    P.box([0.026, 0.03, 0.03], [0, 0.014, 0.075], C.metal),
+    P.box([0.026, 0.03, 0.03], [0, 0.014, -0.075], C.metal),
+  ]},
+  { id: 'spring', name: 'Spring', cat: 'metal', parts: [
+    P.torus([0.04, 0.009], [0, 0.012, 0], C.metal, [90, 0, 0]),
+    P.torus([0.04, 0.009], [0, 0.038, 0], C.metal, [90, 0, 0]),
+    P.torus([0.04, 0.009], [0, 0.064, 0], C.metal, [90, 0, 0]),
+    P.torus([0.038, 0.009], [0, 0.09, 0], C.metal, [90, 0, 0]),
+  ]},
+  { id: 'chain', name: 'Chain', cat: 'metal', parts: [
+    P.torus([0.032, 0.008], [0, 0.032, -0.03], C.grey, [0, 90, 0]),
+    P.torus([0.032, 0.008], [0, 0.032, 0], C.metal),
+    P.torus([0.032, 0.008], [0, 0.032, 0.03], C.grey, [0, 90, 0]),
+  ]},
+  { id: 'key', name: 'Key', cat: 'metal', parts: [
+    P.box([0.1, 0.012, 0.014], [0.02, 0.03, 0], C.gold),
+    P.torus([0.034, 0.01], [-0.055, 0.03, 0], C.gold, [90, 0, 0]),
+    P.box([0.012, 0.012, 0.024], [0.055, 0.03, 0.012], C.gold),
+    P.box([0.012, 0.012, 0.018], [0.032, 0.03, 0.012], C.gold),
+  ]},
+
+  // ---------------------------------------------------------------- paper
+  { id: 'book', name: 'Book', cat: 'paper', parts: [
     P.box([0.17, 0.045, 0.24], [0, 0.023, 0], C.purple),
     P.box([0.15, 0.038, 0.22], [0.012, 0.023, 0], C.cream),
   ]},
-  { id: 'apple', name: 'Apple', tags: ['food', 'red'], parts: [
-    P.sph(0.062, [0, 0.062, 0], C.red, 10),
-    P.cyl([0.008, 0.008, 0.05, 5], [0, 0.13, 0], C.brown),
-    P.box([0.04, 0.008, 0.025], [0.022, 0.135, 0], C.green, [0, 20, 15]),
-  ]},
-  { id: 'carton', name: 'Carton', tags: ['small'], parts: [
+  { id: 'carton', name: 'Carton', cat: 'paper', parts: [
     P.box([0.2, 0.16, 0.17], [0, 0.08, 0], C.wood),
     P.box([0.05, 0.012, 0.18], [0, 0.165, 0], C.cream),
+  ]},
+  { id: 'envelope', name: 'Envelope', cat: 'paper', parts: [
+    P.box([0.2, 0.014, 0.14], [0, 0.008, 0], C.cream),
+    P.box([0.17, 0.008, 0.05], [0, 0.017, 0.035], C.white, [12, 0, 0]),
+    P.box([0.03, 0.006, 0.03], [0, 0.018, -0.045], C.red),
+  ]},
+  { id: 'newspaper', name: 'Newspaper', cat: 'paper', parts: [
+    P.box([0.19, 0.008, 0.15], [0, 0.005, 0], C.cream),
+    P.box([0.185, 0.008, 0.145], [0.004, 0.014, 0.006], C.white, [0, 6, 0]),
+    P.box([0.18, 0.008, 0.14], [-0.004, 0.023, -0.006], C.cream, [0, -5, 0]),
   ]},
 ];

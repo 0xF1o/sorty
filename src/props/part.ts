@@ -14,7 +14,7 @@ export type Part = {
   a?: number[];
 };
 
-export type PropSpec = { id: string; name: string; tags: Tag[]; parts: Part[] };
+export type PropSpec = { id: string; name: string; cat: Tag; parts: Part[] };
 
 const DEG = Math.PI / 180;
 /** Everything authored at real-world size looked too small in first person. */
@@ -23,7 +23,7 @@ export const PROP_SCALE = 1.7;
 const box = (s: Vec3, p: Vec3, c: string, r?: Vec3): Part => ({ k: 'box', s, p, c, r });
 const cyl = (a: number[], p: Vec3, c: string, r?: Vec3): Part => ({ k: 'cyl', a, p, c, r });
 const sph = (r: number, p: Vec3, c: string, seg = 10): Part => ({ k: 'sph', a: [r, seg], p, c });
-const cone = (r: number, h: number, p: Vec3, c: string, seg = 10): Part => ({ k: 'cone', a: [r, h, seg], p, c });
+const cone = (r: number, h: number, p: Vec3, c: string, seg = 10, rot?: Vec3): Part => ({ k: 'cone', a: [r, h, seg], p, c, r: rot });
 const torus = (a: [number, number], p: Vec3, c: string, r?: Vec3): Part => ({ k: 'torus', a: [a[0], a[1], 6, 12], p, c, r });
 
 export const P = { box, cyl, sph, cone, torus };

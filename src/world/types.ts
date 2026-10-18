@@ -2,14 +2,19 @@ import type { Mesh, Object3D, Vector3 } from 'three';
 import type { PropSpec } from '../props/part';
 import type { Tag } from '../palette';
 
-export type Prop = { spec: PropSpec; mesh: Mesh; slot: Slot | null };
+export type Prop = {
+  spec: PropSpec;
+  mesh: Mesh;
+  slot: Slot | null;
+  /** Money is paid once per item per shift, so shelf -> hand -> shelf cannot farm cash. */
+  paid: boolean;
+};
 
 export type Slot = {
   id: number;
   pos: Vector3;
   occupied: Prop | null;
   pick: Mesh;
-  high: boolean;
   shelf: Shelf;
 };
 

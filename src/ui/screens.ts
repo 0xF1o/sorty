@@ -8,10 +8,10 @@ export function titleHtml(): string {
     <ul class="controls">
       <li><b>WASD</b> walk &nbsp;/&nbsp; <b>Mouse</b> look</li>
       <li><b>Left click</b> pick up &nbsp;/&nbsp; <b>Right click</b> place</li>
-      <li><b>R</b> rotate &nbsp;/&nbsp; <b>Q</b> highlight &nbsp;/&nbsp; <b>F</b> tidy</li>
-      <li><b>Shift</b> sprint &nbsp;/&nbsp; <b>Space</b> jump &nbsp;/&nbsp; <b>Esc</b> pause</li>
+      <li><b>R</b> rotate &nbsp;/&nbsp; <b>Q</b> highlight &nbsp;/&nbsp; <b>F</b> tidy &nbsp;/&nbsp; <b>Space</b> magnet</li>
+      <li><b>Shift</b> sprint &nbsp;/&nbsp; <b>Esc</b> pause</li>
     </ul>
-    <p class="sub">Carry junk to the shelf whose card matches it. Cash buys upgrades between shifts. Three shifts, fifteen minutes.</p>
+    <p class="sub">Every item has one category and every shelf has one card. Carry it over, put it in any free slot, get paid. Three shifts, then shop for upgrades.</p>
     <button id="start" class="primary big">Start shift 1</button>
   </div>`;
 }

@@ -9,10 +9,11 @@ export class Interact {
   targetSlot: Slot | null = null;
   private raycaster = new Raycaster();
   private ghostMat = new MeshBasicMaterial({ color: OK, transparent: true, opacity: 0.45, depthWrite: false });
-  private ghost: Mesh = new Mesh(new BoxGeometry(0.1, 0.1, 0.1), this.ghostMat);
+  private ghost: Mesh;
   private heldId = '';
 
   constructor(private camera: Camera, scene: Scene) {
+    this.ghost = new Mesh(new BoxGeometry(0.1, 0.1, 0.1), this.ghostMat);
     this.ghost.visible = false;
     this.ghost.renderOrder = 5;
     scene.add(this.ghost);
@@ -20,25 +21,21 @@ export class Interact {
 
   update(worldProps: Prop[], slots: Slot[], held: Prop | null, isValid: (slot: Slot) => boolean): void {
     this.raycaster.setFromCamera(new Vector2(0, 0), this.camera);
-    const objects = worldProps.map((p) => p.mesh).concat(slots.map((s) => s.pick));
-    const hits = this.raycaster.intersectObjects(objects, false);
-    this.hovered = null;
-    this.targetSlot = null;
-    for (const hit of hits) {
-      const prop = hit.object.userData.prop as Prop | undefined;
-      if (prop) { this.hovered = prop; break; }
-      const slot = hit.object.userData.slot as Slot | undefined;
-      if (slot) { this.targetSlot = slot; break; }
-    }
 
-    if (!held || !this.targetSlot) { this.ghost.visible = false; return; }
+    // Two separate casts on purpose: an item sitting in a slot must still be pickable,
+    // and floor junk must not block placing onto the shelf behind it.
+    const propHit = this.raycaster.intersectObjects(worldProps.map((p) => p.mesh), false)[0];
+    this.hovered = (propHit?.object.userData.prop as Prop | undefined) ?? null;
+    const slotHit = this.raycaster.intersectObjects(slots.map((s) => s.pick), false)[0];
+    this.targetSlot = (slotHit?.object.userData.slot as Slot | undefined) ?? null;
+
+    if (!held || !this.targetSlot) { this.ghost.visible = false; return }
     const slot = this.targetSlot;
-    if (this.heldId !== held.spec.id) { this.ghost.geometry = held.mesh.geometry; this.heldId = held.spec.id; }
+    if (this.heldId !== held.spec.id) { this.ghost.geometry = held.mesh.geometry; this.heldId = held.spec.id }
     this.ghost.position.copy(slot.pos);
     this.ghost.rotation.y = slot.shelf.group.rotation.y;
     this.ghost.scale.setScalar(1);
-    const ok = isValid(slot);
-    this.ghostMat.color.setHex(ok ? OK : BAD);
+    this.ghostMat.color.setHex(isValid(slot) ? OK : BAD);
     this.ghost.visible = true;
   }
 

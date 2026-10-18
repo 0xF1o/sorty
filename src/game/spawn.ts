@@ -43,7 +43,7 @@ export function scatterPositions(count: number, shelves: Shelf[]): Vector3[] {
 
 /** Items that are guaranteed at least one home among this shift's shelf filters. */
 export function pickSpecs(filters: Tag[], count: number): PropSpec[] {
-  const pool = CATALOG.filter((s) => s.tags.some((t) => filters.includes(t)));
+  const pool = CATALOG.filter((s) => filters.includes(s.cat));
   const out: PropSpec[] = [];
   const seen = new Map<string, number>();
   let guard = 0;
@@ -51,7 +51,7 @@ export function pickSpecs(filters: Tag[], count: number): PropSpec[] {
     const s = pool[Math.floor(Math.random() * pool.length)];
     if (!s) break;
     const n = seen.get(s.id) ?? 0;
-    if (n >= 3) continue;
+    if (n >= 2) continue;
     seen.set(s.id, n + 1);
     out.push(s);
   }

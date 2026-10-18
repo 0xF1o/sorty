@@ -10,7 +10,6 @@ export const REACH = 1.95;
 export const REACH_UP = 0.45;
 
 export const GRAVITY = 18;
-export const JUMP_H = [0, 1.0, 1.2, 1.45];
 
 export const SHIFT_SEC = [150, 150, 150];
 export const SHOP_SEC = 45;

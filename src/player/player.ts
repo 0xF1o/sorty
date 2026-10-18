@@ -1,5 +1,5 @@
 import { MathUtils, Vector3 } from 'three';
-import { EYE, GRAVITY, HALF, JUMP_H, PLAYER_R, REACH, REACH_UP, WALK } from '../const';
+import { EYE, GRAVITY, HALF, PLAYER_R, REACH, REACH_UP, WALK } from '../const';
 import type { Input } from '../input';
 import type { Aabb } from '../world/types';
 
@@ -10,7 +10,6 @@ export class Player {
   pitch = 0;
   onGround = true;
   sprintMul = 1;
-  jumpLevel = 0;
   private bobT = 0;
   private bobY = 0;
 
@@ -55,9 +54,6 @@ export class Player {
     const k = 1 - Math.exp(-14 * dt);
     this.vel.x += (wishX - this.vel.x) * k;
     this.vel.z += (wishZ - this.vel.z) * k;
-
-    const jump = input.take('Space');
-    if (!frozen && this.onGround && this.jumpLevel > 0 && jump) this.vel.y = Math.sqrt(2 * GRAVITY * JUMP_H[this.jumpLevel]);
 
     this.vel.y -= GRAVITY * dt;
     this.pos.x += this.vel.x * dt;

@@ -1,25 +1,26 @@
-export type Tag = 'metal' | 'red' | 'toys' | 'food' | 'small' | 'tools' | 'soft';
+export type Tag = 'food' | 'toys' | 'tools' | 'soft' | 'kitchen' | 'metal' | 'paper';
 
-export const TAGS: Tag[] = ['food', 'metal', 'toys', 'small', 'tools', 'red', 'soft'];
+/** Order matters: shift 1 uses the first five, shift 2 adds one, shift 3 all seven. */
+export const TAGS: Tag[] = ['food', 'toys', 'tools', 'soft', 'kitchen', 'metal', 'paper'];
 
 export const TAG_LABEL: Record<Tag, string> = {
-  metal: 'METAL',
-  red: 'RED THINGS',
-  toys: 'TOYS',
   food: 'FOOD',
-  small: 'SMALL',
+  toys: 'TOYS',
   tools: 'TOOLS',
-  soft: 'SOFT',
+  soft: 'SOFT THINGS',
+  kitchen: 'KITCHEN',
+  metal: 'METAL',
+  paper: 'PAPER',
 };
 
 export const TAG_COLOR: Record<Tag, string> = {
-  metal: '#9fb6cc',
-  red: '#e2604c',
-  toys: '#e0a63c',
   food: '#8fbf5a',
-  small: '#7aa7d8',
+  toys: '#e0a63c',
   tools: '#b48bd6',
   soft: '#e08fae',
+  kitchen: '#4fb3a8',
+  metal: '#9fb6cc',
+  paper: '#d8c9a3',
 };
 
 /** Flat low-poly palette. Keep it small; every prop uses 2-3 of these. */
