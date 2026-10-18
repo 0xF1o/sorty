@@ -603,6 +603,8 @@ export class Game {
       levels: { ...this.levels }, highlightActive: this.highlightEnd > 0,
       hover: this.interact.hovered?.spec.id ?? null, toast: this.hud.lastToast, dbg: this.dbg,
       target: this.interact.targetSlot?.id ?? null,
+      // invariant: no floor item may be homeless. Must always be 0 or the shift is unwinnable.
+      overflow: this.worldProps.filter((p) => !p.slot && !this.slots.some((s) => s.shelf.filter === p.spec.cat && !s.occupied)).length,
       pos: [Number(this.player.pos.x.toFixed(2)), Number(this.player.pos.z.toFixed(2))],
       yaw: Number(this.player.yaw.toFixed(2)), pitch: Number(this.player.pitch.toFixed(2)),
     };

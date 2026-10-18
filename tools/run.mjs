@@ -41,7 +41,7 @@ for (let shift = 0; shift < 3; shift++) {
     await frames(3);
   }
   const played = await state();
-  console.log(`shift ${shift + 1}: shelves ${before.shelves} slots ${before.slots} props ${before.props} -> money ${played.money} filled ${played.filled}`);
+  console.log(`shift ${shift + 1}: shelves ${before.shelves} slots ${before.slots} props ${before.props} overflow ${before.overflow} -> money ${played.money} filled ${played.filled} overflow ${played.overflow}`);
 
   await page.evaluate(() => window.__game.debugEndShift());
   await page.waitForTimeout(500);

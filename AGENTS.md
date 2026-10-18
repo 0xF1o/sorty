@@ -19,6 +19,7 @@ Dev URL params: `?shift=20&shop=5` shorten the clocks for fast iteration.
 - **One category per item, one shelf per category.** Categories: `food, toys, tools, soft, kitchen, metal, paper`. A placement is legal only if the item's category equals the shelf card's.
 - **Seven shelf positions**, all on the walls, three rows each (0.36 / 0.98 / 1.60 m). Every row is reachable — no tall cabinets, no ability needed. Six slots per shelf (2 columns × 3 rows).
 - Three shifts: 5 / 6 / 7 categories, 20 / 28 / 36 items, 2:30 each, 45 s shop between them.
+- **Generation guarantees every item has a slot.** `pickSpecs` spreads items round-robin over the categories and never gives a category more items than its shelf has slots (`SHELF_SLOTS`, also capped at 2 copies per archetype). `debugState().overflow` must always be 0 — if it is not, a shift is unwinnable. Checked by `tools/run.mjs` and a 60-sample sweep.
 - The room is **wiped when a shift ends**, so the shop shows an empty floor and every shift starts clean.
 - Items can be picked back **off a shelf** at any time; the slot frees up. Money is paid **once per item per shift** (`Prop.paid`), so shelf → hand → shelf cannot farm cash.
 - Abilities: Backpack 1/2/4/6, Highlight, Tidy, Sprint, **Magnet** (replaced Jump — pulls a far item in, Space). $8 / $18 / $35.

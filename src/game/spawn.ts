@@ -2,6 +2,7 @@ import { Vector3 } from 'three';
 import type { Tag } from '../palette';
 import { CATALOG } from '../props/catalog';
 import type { PropSpec } from '../props/part';
+import { SHELF_SLOTS } from '../world/shelf';
 import type { Shelf } from '../world/types';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -41,19 +42,41 @@ export function scatterPositions(count: number, shelves: Shelf[]): Vector3[] {
   return out;
 }
 
-/** Items that are guaranteed at least one home among this shift's shelf filters. */
+/**
+ * Items for a shift. Hard rule: never spawn more items of a category than its shelf has slots,
+ * otherwise the shift cannot be finished no matter how well the player plays.
+ * Counts are spread round-robin, so a category with a small catalogue cannot hog the quota.
+ */
 export function pickSpecs(filters: Tag[], count: number): PropSpec[] {
-  const pool = CATALOG.filter((s) => filters.includes(s.cat));
-  const out: PropSpec[] = [];
-  const seen = new Map<string, number>();
+  const pools = new Map<Tag, PropSpec[]>();
+  for (const f of filters) pools.set(f, CATALOG.filter((s) => s.cat === f));
+
+  // capacity by category = shelf slots, but never more than two copies of each archetype
+  const caps = new Map<Tag, number>();
+  for (const f of filters) caps.set(f, Math.min(SHELF_SLOTS, (pools.get(f)?.length ?? 0) * 2));
+
+  const order = shuffle([...filters]);
+  const counts = new Map<Tag, number>(filters.map((f) => [f, 0]));
+  let total = 0;
   let guard = 0;
-  while (out.length < count && guard++ < 500) {
-    const s = pool[Math.floor(Math.random() * pool.length)];
-    if (!s) break;
-    const n = seen.get(s.id) ?? 0;
-    if (n >= 2) continue;
-    seen.set(s.id, n + 1);
-    out.push(s);
+  while (total < count && guard++ < 2000) {
+    for (const f of order) {
+      if (total >= count) break;
+      const cur = counts.get(f) ?? 0;
+      if (cur >= (caps.get(f) ?? 0)) continue;
+      counts.set(f, cur + 1);
+      total++;
+    }
   }
-  return out;
+
+  const out: PropSpec[] = [];
+  for (const f of filters) {
+    const pool = shuffle([...(pools.get(f) ?? [])]);
+    const need = counts.get(f) ?? 0;
+    for (let k = 0; k < need; k++) {
+      const spec = pool[k % pool.length];
+      if (spec) out.push(spec);
+    }
+  }
+  return shuffle(out);
 }

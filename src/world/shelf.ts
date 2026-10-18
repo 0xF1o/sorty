@@ -14,6 +14,9 @@ const BOARD_D = D - 0.03;
 const ROWS = [0.36, 0.98, 1.6];
 const COL_X = [-0.28, 0.28];
 
+/** Slots on one shelf. Items per category must never exceed this, or a shift is unwinnable. */
+export const SHELF_SLOTS = ROWS.length * COL_X.length;
+
 /** Usable space per slot. Placed props are scaled down to fit this box. */
 export const CELL = { w: 0.52, d: 0.42, h: 0.58 };
 
