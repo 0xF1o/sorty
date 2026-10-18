@@ -1,7 +1,17 @@
 import { ABILITY_INFO, ABILITY_ORDER, type Levels } from '../game/abilities';
 import { ABILITY_PRICES } from '../const';
 
+const REPO_URL = 'https://github.com/0xF1o/sorty';
+
+function buildStamp(): { local: string; utc: string } {
+  const utc = typeof __BUILD_TIME__ === 'string' ? __BUILD_TIME__ : new Date().toISOString();
+  const d = new Date(utc);
+  const local = Number.isNaN(d.getTime()) ? utc : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  return { local, utc };
+}
+
 export function titleHtml(): string {
+  const { local, utc } = buildStamp();
   return `<div class="panel">
     <h1>SORTY</h1>
     <p class="tagline">Everything is on the floor. Put it on a shelf.</p>
@@ -13,6 +23,7 @@ export function titleHtml(): string {
     </ul>
     <p class="sub">Every item has one category and every shelf has one card. Carry it over, put it in any free slot, get paid. Three shifts, then shop for upgrades.</p>
     <button id="start" class="primary big">Start shift 1</button>
+    <p class="meta">build <span title="UTC ${utc}">${local}</span> &nbsp;/&nbsp; <a href="${REPO_URL}" target="_blank" rel="noopener noreferrer">github.com/0xF1o/sorty</a></p>
   </div>`;
 }
 

@@ -136,6 +136,10 @@ h2 { font-size: 22px; letter-spacing: 0.06em; margin-bottom: 16px }
 .shop-foot .sub { margin: 0 }
 #shop-timer { color: #ffd479; font-weight: 800 }
 
+.meta { margin-top: 14px; font-size: 11.5px; color: #7b7264; letter-spacing: 0.03em }
+.meta a { color: #a89b86; text-decoration: none; border-bottom: 1px solid #4a4239; padding-bottom: 1px }
+.meta a:hover { color: #ffd479; border-bottom-color: #ffd479 }
+
 .results { display: flex; justify-content: center; gap: 26px; margin: 6px 0 4px }
 .results div { display: flex; flex-direction: column; gap: 2px }
 .results b { font-size: 24px; color: #ffd479 }

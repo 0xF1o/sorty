@@ -47,6 +47,7 @@ Pickup/place tweens; settings (sensitivity, volume, invert Y, mute); more room l
 
 - **Two raycasts in `player/interact.ts`, and this is load-bearing.** Props and shelf slots are cast separately. A single combined cast breaks in both directions: the invisible slot pick sits in front of a placed item (so you could never pick items off shelves — this was a real bug), and floor junk blocks placement onto the shelf behind it.
 - **No coplanar faces in the shelf geometry.** Boards are inset (`BOARD_W`/`BOARD_D`) and the side panels stop 4 cm short of the top so no two faces share a plane — coincident, same-facing faces z-fight visibly at the joints. Look at `buildShelf` before changing any dimension.
+- **Build stamp:** `vite.config.ts` defines `__BUILD_TIME__` (ISO UTC at build time); the title screen renders it in the viewer's local time and links to the repo. It is generated per build — do not hardcode it.
 - **The ability bar always lists all four keyed abilities.** Locked ones are dimmed, ready ones are green, cooling ones show seconds. Players learn the keys before buying.
 - **Pointer lock requests must come from a click handler.** Esc unlocks → pause overlay; the shift clock only ticks while locked.
 - **Camera matrices are one frame stale** inside the update loop (Raycaster reads `matrixWorld` from the last render). Harmless at 60 fps, but the harnesses must wait real animation frames, not wall-clock timeouts.
