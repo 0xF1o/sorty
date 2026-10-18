@@ -1,5 +1,7 @@
 # Sorty
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/96b267ce-b485-43da-9004-2b01a69914fd/deploy-status)](https://app.netlify.com/projects/sorty-game/deploys)
+
 A first-person sorting game. Junk is spread across the floor; every item has exactly one category and every shelf has exactly one card. Put it away before the shift ends; cash buys upgrades between shifts.
 
 Working notes for the next session: [`AGENTS.md`](./AGENTS.md)
